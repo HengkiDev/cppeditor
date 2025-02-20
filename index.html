@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C++ Web Editor</title>
+    <title>C++ Web Editor with Input</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/mode-c_cpp.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/theme-monokai.js"></script>
@@ -26,6 +26,17 @@
             height: 300px;
             border-radius: 5px;
             border: 1px solid #ccc;
+        }
+        #input {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            resize: vertical;
         }
         #output {
             width: 100%;
@@ -54,20 +65,29 @@
         .button:hover {
             background-color: #45a049;
         }
+        .input-section {
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>C++ Web Editor</h1>
+        <h1>C++ Web Editor with Input Support</h1>
         <div class="editor-container">
             <div id="editor">#include <iostream>
-
 using namespace std;
 
 int main() {
-    cout << "Hello, World!" << endl;
+    int number;
+    cout << "Enter a number: ";
+    cin >> number;
+    cout << "You entered: " << number << endl;
     return 0;
 }</div>
+        </div>
+        <div class="input-section">
+            <h3>Program Input:</h3>
+            <textarea id="input" placeholder="Enter your program's input here (each input on a new line)"></textarea>
         </div>
         <button class="button" onclick="runCode()">Run Code</button>
         <h3>Output:</h3>
@@ -83,6 +103,7 @@ int main() {
         // Function to run the code
         async function runCode() {
             const output = document.getElementById('output');
+            const input = document.getElementById('input').value;
             output.innerHTML = "Compiling and running...";
             
             try {
@@ -99,7 +120,8 @@ int main() {
                         code: code,
                         compiler: 'gcc-head',
                         options: 'c++17',
-                        save: false
+                        save: false,
+                        stdin: input
                     })
                 });
 
